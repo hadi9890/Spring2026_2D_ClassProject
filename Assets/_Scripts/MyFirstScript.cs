@@ -1,23 +1,35 @@
+using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MyFirstScript : MonoBehaviour
 {
     private float _xInput;
     [SerializeField] private float speed;
-    private Rigidbody2D rb;
+    private Rigidbody2D _rb;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private GameObject groundCheck;
     [SerializeField] private float groundCheckRadius;
     [HideInInspector] public bool isGrounded;
+    [SerializeField] private GameObject _attackbox;
+    [SerializeField] private List<AudioClip> footstepsSFX;
     private Animator _anim;
+    private AudioSource _audioSource;
 
-    [SerializeField] private GameObject bulletPrefab;
     private static readonly int IsMoving = Animator.StringToHash("isMoving");
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Start()
+    {
+        _attackbox.SetActive(false);
     }
 
     private void Update()
@@ -28,14 +40,40 @@ public class MyFirstScript : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.transform.position, groundCheckRadius, groundLayer);
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            Instantiate(bulletPrefab, transform.position + new Vector3(1, 0, 0), Quaternion.identity);
+            _anim.SetTrigger("isAttacking");
         }
     }
     
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(_xInput * speed, rb.velocity.y);
+        _rb.velocity = new Vector2(_xInput * speed, _rb.velocity.y);
     }
+
+    public void EnableHitbox()
+    {
+        _attackbox.SetActive(true);
+    }
+
+    public void DisableHitbox()
+    {
+        _attackbox.SetActive(false);
+    }
+
+    public void FootstepSFX()
+    {
+        var clip = footstepsSFX[Random.Range(0, footstepsSFX.Count)];
+        _audioSource.PlayOneShot(clip);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
