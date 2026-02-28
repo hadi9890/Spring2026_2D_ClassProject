@@ -44,6 +44,11 @@ public class MyFirstScript : MonoBehaviour
         {
             _anim.SetTrigger("isAttacking");
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GameManager.instance.PauseResumeGame();
+        }
     }
     
     private void FixedUpdate()
