@@ -5,8 +5,7 @@ namespace _Scripts.Misc_
     public class AdvancedJump : MonoBehaviour
     {
         private Rigidbody2D _rb;
-        // private Animator _anim;
-        private MyFirstScript _playerMovement;
+        private Player _playerMovement;
     
         [Space(10), Header("Jump Variables")]
         [SerializeField] private float jumpPower = 11;
@@ -52,17 +51,10 @@ namespace _Scripts.Misc_
         private bool _eligibleForHangTime;
         private bool _isInHangTime;
     
-        #region Anim Hashes
-    
-        private static readonly int YVelocity = Animator.StringToHash("yVelocity");
-    
-        #endregion
-    
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
-            // _anim = GetComponent<Animator>();
-            _playerMovement = GetComponent<MyFirstScript>();
+            _playerMovement = GetComponent<Player>();
         }
     
         private void Update()
@@ -156,14 +148,6 @@ namespace _Scripts.Misc_
                     _rb.velocity += Vector2.up * (Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime);
                 }
             }
-    
-            // if (_playerMovement.isGrounded)
-            // {
-            //     _anim.SetFloat(YVelocity, 0);
-            //     return;
-            // }
-            //     
-            // _anim.SetFloat(YVelocity, _rb.velocity.y);
         }
     
         private void Jump()
