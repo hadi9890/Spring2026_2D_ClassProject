@@ -85,7 +85,7 @@ namespace _Scripts.Misc_
         {
             // Restrict the changed health value between 0 and "maxHealth"
             _currHealth = Mathf.Clamp(_currHealth + amount, 0, enemyData.health);
-            Debug.Log("Changed the health of " + gameObject.name + " to: " + _currHealth);
+            // Debug.Log("Changed the health of " + gameObject.name + " to: " + _currHealth);
 
             // If we're decreasing health and enemy health still hasn't reached 0, play the hit animation
             if (amount <= 0 && _currHealth != 0)

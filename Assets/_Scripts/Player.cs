@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Scripts.Interfaces;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace _Scripts
@@ -29,8 +30,8 @@ namespace _Scripts
 
         #region Components
     
-        private Rigidbody2D _rb;
-        private Animator _anim;
+        [HideInInspector] public Rigidbody2D rb;
+        [HideInInspector] public Animator anim;
         private AudioSource _audioSource;
 
         #endregion
@@ -40,13 +41,14 @@ namespace _Scripts
         private static readonly int IsMoving = Animator.StringToHash("isMoving");
         private static readonly int IsAttacking = Animator.StringToHash("isAttacking");
         private static readonly int Hit = Animator.StringToHash("Hit");
+        private static readonly int IsGrounded = Animator.StringToHash("isGrounded");
 
         #endregion
 
         private void Awake()
         {
-            _rb = GetComponent<Rigidbody2D>();
-            _anim = GetComponent<Animator>();
+            rb = GetComponent<Rigidbody2D>();
+            anim = GetComponent<Animator>();
             _audioSource = GetComponent<AudioSource>();
         }
 
@@ -58,15 +60,16 @@ namespace _Scripts
         private void Update()
         {
             _xInput = Input.GetAxisRaw("Horizontal");
-
-            _anim.SetBool(IsMoving, _xInput != 0);
-
             isGrounded = Physics2D.OverlapCircle(groundCheck.transform.position, groundCheckRadius, groundLayer);
+
+            anim.SetBool(IsMoving, _xInput != 0);
+            anim.SetBool(IsGrounded, isGrounded);
+            
             CheckCharacterFlip();
         
             if (Input.GetKeyDown(KeyCode.J))
             {
-                _anim.SetTrigger(IsAttacking);
+                anim.SetTrigger(IsAttacking);
             }
 
             if (Input.GetKeyDown(KeyCode.P))
@@ -77,7 +80,7 @@ namespace _Scripts
     
         private void FixedUpdate()
         {
-            _rb.velocity = new Vector2(_xInput * speed, _rb.velocity.y);
+            rb.velocity = new Vector2(_xInput * speed, rb.velocity.y);
         }
 
         public void FootstepSFX()
@@ -141,7 +144,7 @@ namespace _Scripts
             // If we're decreasing health, play the hit animation
             if (amount <= 0)
             {
-                _anim?.SetTrigger(Hit);
+                anim?.SetTrigger(Hit);
             }
         }
     }

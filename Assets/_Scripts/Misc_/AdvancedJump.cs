@@ -50,7 +50,8 @@ namespace _Scripts.Misc_
         private float _jumpHoldTimer;
         private bool _eligibleForHangTime;
         private bool _isInHangTime;
-    
+        private static readonly int YVelocity = Animator.StringToHash("yVelocity");
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
@@ -114,6 +115,8 @@ namespace _Scripts.Misc_
                     _jumpCooldownTimer = jumpCooldown;
                 }
             }
+            
+            _playerMovement.anim.SetFloat(YVelocity, _playerMovement.rb.velocity.y);
         }
     
         private void FixedUpdate()
