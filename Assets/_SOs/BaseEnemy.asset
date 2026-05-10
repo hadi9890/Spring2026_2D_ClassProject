@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BaseEnemy
   m_EditorClassIdentifier: 
   health: 3
-  moveSpeed: 2
+  moveSpeed: 5
   edgeDetectionDistance: 0.75
   wallDetectionDistance: 1.01
   groundLayer:
